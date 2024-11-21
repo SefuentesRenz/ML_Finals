@@ -1,28 +1,88 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Support Vector Machine - [Your Company Name]</title>
-    <link rel="stylesheet" href="../css/style.css">
-</head>
-<body>
-    <header>
-        <h1>Support Vector Machine (SVM)</h1>
-    </header>
-    <main>
-        <section>
-            <h2>Overview</h2>
-            <p>Support Vector Machines are used for classification tasks. We employ SVM to differentiate between fraud and non-fraud transactions in our financial data.</p>
-        </section>
-        <section>
-            <h2>Application</h2>
-            <p>SVM helps our security team detect potentially fraudulent activities in real-time, reducing financial risks.</p>
-        </section>
-        <section>
-            <h2>Example Dataset and Visualization</h2>
-            <img src="../images/svm_example.png" alt="Support Vector Machine Example Visualization">
-        </section>
-    </main>
-</body>
-</html>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Support Vector Machine - Professor Rating Prediction</title>
+        <style>
+            body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f4f4f9;
+            }
+    
+            h1 {
+            color: #333;
+            }
+    
+            form {
+            background: #fff;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
+    
+            input[type="text"], select {
+            padding: 10px;
+            width: 100%;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            }
+    
+            input[type="submit"] {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            }
+    
+            input[type="submit"]:hover {
+            background-color: #555;
+            }
+    
+            h2 {
+            color: #333;
+            }
+    
+            .error-message {
+            color: red;
+            font-size: 1.2em;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1>Predict Professor Rating using Support Vector Machine (SVM)</h1>
+        </header>
+        <main>
+            <section>
+                <h2>Enter the Professor Evaluation Data</h2>
+                <form method="post">
+                    Engagement: <input type="text" name="engagement" required><br>
+                    Clarity: <input type="text" name="clarity" required><br>
+                    Knowledge: <input type="text" name="knowledge" required><br>
+                    Communication: <input type="text" name="communication" required><br>
+                    Overall Satisfaction: <input type="text" name="overall_satisfaction" required><br>
+                    <input type="submit" value="Predict Rating">
+                </form>
+                
+            </section>
+            {% if prediction %}
+            <section>
+                <h3>Prediction Result:</h3>
+                <p>Professor Rating: {{ prediction }}</p>
+            </section>
+            {% endif %}
+            {% if error_message %}
+            <section>
+                <p style="color: red;">{{ error_message }}</p>
+            </section>
+            {% endif %}
+        </main>
+    </body>
+    </html>
