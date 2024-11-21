@@ -2,7 +2,7 @@ from flask import Flask, render_template, request
 import pandas as pd
 from sklearn.linear_model import LinearRegression
 from sklearn.naive_bayes import GaussianNB
-from sklearn.neighbors import KNeighborsClassifier
+from sklearn.neighbors import KNeighborsRegressor
 from sklearn.svm import SVC
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.neural_network import MLPClassifier
@@ -122,12 +122,13 @@ def knn():
     error_message = None
     if request.method == 'POST':
         try:
+            # Retrieve form data
             department = request.form['department']
             prev_enrollment_year_1 = int(request.form['prev_enrollment_year_1'])
             prev_enrollment_year_2 = int(request.form['prev_enrollment_year_2'])
             prev_enrollment_year_3 = int(request.form['prev_enrollment_year_3'])
         except ValueError:
-            error_message = "Invalid input. Please enter numeric values for all fields."
+            error_message = "Invalid input. Please enter numeric values for previous enrollment years."
             return render_template('knn.html', error_message=error_message)
 
         # Sample historical enrollment data
@@ -139,23 +140,27 @@ def knn():
             'EnrolmentNextYear': [115, 135, 105, 125, 95]
         })
 
-        # Filter data for the selected department
-        department_data = data[data['Department'] == department]
-        
+        # Filter data for the selected department (case-insensitive match)
+        department_data = data[data['Department'].str.lower() == department.lower()]
+
         if department_data.empty:
-            error_message = "Department not found."
+            error_message = f"No data found for department: {department}. Please select a valid department."
             return render_template('knn.html', error_message=error_message)
 
         # Prepare the data for KNN regression
         X = department_data[['PrevYear1', 'PrevYear2', 'PrevYear3']]
         y = department_data['EnrolmentNextYear']
 
-        # Initialize KNN Regressor
-        model = KNeighborsRegressor(n_neighbors=2)  # n_neighbors can be adjusted based on data
-        model.fit(X, y)
+        # Initialize and train KNN Regressor
+        try:
+            model = KNeighborsRegressor(n_neighbors=1)  # Adjust n_neighbors as needed
+            model.fit(X, y)
 
-        # Predict the enrollment for the next year based on user input
-        prediction = model.predict([[prev_enrollment_year_1, prev_enrollment_year_2, prev_enrollment_year_3]])[0]
+            # Predict the enrollment for the next year
+            prediction = model.predict([[prev_enrollment_year_1, prev_enrollment_year_2, prev_enrollment_year_3]])[0]
+        except Exception as e:
+            error_message = f"An error occurred during prediction: {str(e)}"
+            return render_template('knn.html', error_message=error_message)
 
     return render_template('knn.html', prediction=prediction, error_message=error_message)
 
