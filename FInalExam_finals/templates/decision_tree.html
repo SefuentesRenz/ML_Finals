@@ -3,26 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Decision Tree - [Your Company Name]</title>
-    <link rel="stylesheet" href="../css/style.css">
+    <title>Decision Tree - Predict Professor Rating</title>
+    <style>
+        body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background: #f4f4f9;
+        }
+
+        h1 {
+        color: #333;
+        }
+
+        form {
+        background: #fff;
+        padding: 20px;
+        margin: 20px 0;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        input[type="text"], select {
+        padding: 10px;
+        width: 100%;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        }
+
+        input[type="submit"] {
+        background-color: #333;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+        background-color: #555;
+        }
+
+        h2 {
+        color: #333;
+        }
+
+        .error-message {
+        color: red;
+        font-size: 1.2em;
+        }
+    </style>
+    
 </head>
 <body>
     <header>
-        <h1>Decision Tree</h1>
+        <h1>Predict Professor Rating using Decision Tree</h1>
     </header>
     <main>
         <section>
-            <h2>Overview</h2>
-            <p>Decision Trees are used for both classification and regression tasks. Our company uses them to analyze customer demographics and predict purchasing patterns.</p>
+            <h2>Enter Professor Evaluation Data</h2>
+            <form method="POST">
+                <label for="engagement">Engagement:</label>
+                <input type="text" name="engagement" required><br><br>
+
+                <label for="clarity">Clarity:</label>
+                <input type="text" name="clarity" required><br><br>
+
+                <label for="knowledge">Knowledge:</label>
+                <input type="text" name="knowledge" required><br><br>
+
+                <label for="communication">Communication:</label>
+                <input type="text" name="communication" required><br><br>
+
+                <label for="overall_satisfaction">Overall Satisfaction:</label>
+                <input type="text" name="overall_satisfaction" required><br><br>
+
+                <input type="submit" value="Predict Rating">
+            </form>
         </section>
+
+        {% if prediction %}
         <section>
-            <h2>Application</h2>
-            <p>With Decision Trees, we can make targeted recommendations for customers based on their past behavior.</p>
+            <h2>Prediction Result</h2>
+            <p>The predicted rating is: <strong>{{ prediction }}</strong></p>
         </section>
+        {% endif %}
+
+        {% if error_message %}
         <section>
-            <h2>Example Dataset and Visualization</h2>
-            <img src="../images/decision_tree_example.png" alt="Decision Tree Example Visualization">
+            <h2>Error</h2>
+            <p>{{ error_message }}</p>
         </section>
+        {% endif %}
     </main>
 </body>
 </html>
