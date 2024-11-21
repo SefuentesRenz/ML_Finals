@@ -118,29 +118,46 @@ def predict_professor():
 
 @app.route('/knn', methods=['GET', 'POST'])
 def knn():
+    prediction = None
+    error_message = None
     if request.method == 'POST':
-        math_score = float(request.form['math_score'])
-        eng_score = float(request.form['eng_score'])
+        try:
+            department = request.form['department']
+            prev_enrollment_year_1 = int(request.form['prev_enrollment_year_1'])
+            prev_enrollment_year_2 = int(request.form['prev_enrollment_year_2'])
+            prev_enrollment_year_3 = int(request.form['prev_enrollment_year_3'])
+        except ValueError:
+            error_message = "Invalid input. Please enter numeric values for all fields."
+            return render_template('knn.html', error_message=error_message)
 
+        # Sample historical enrollment data
         data = pd.DataFrame({
-            'MathScore': [85, 78, 90, 88, 95],
-            'EngScore': [80, 75, 85, 82, 92],
-            'Group': [1, 0, 1, 1, 0]
+            'Department': ['Computer Science', 'Information Technology', 'Mechanical Engineering', 'Civil Engineering', 'Biology'],
+            'PrevYear1': [100, 120, 90, 110, 80],
+            'PrevYear2': [105, 125, 95, 115, 85],
+            'PrevYear3': [110, 130, 100, 120, 90],
+            'EnrolmentNextYear': [115, 135, 105, 125, 95]
         })
-        X = data[['MathScore', 'EngScore']]
-        y = data['Group']
 
-        model = KNeighborsClassifier(n_neighbors=3)
+        # Filter data for the selected department
+        department_data = data[data['Department'] == department]
+        
+        if department_data.empty:
+            error_message = "Department not found."
+            return render_template('knn.html', error_message=error_message)
+
+        # Prepare the data for KNN regression
+        X = department_data[['PrevYear1', 'PrevYear2', 'PrevYear3']]
+        y = department_data['EnrolmentNextYear']
+
+        # Initialize KNN Regressor
+        model = KNeighborsRegressor(n_neighbors=2)  # n_neighbors can be adjusted based on data
         model.fit(X, y)
-        prediction = model.predict([[math_score, eng_score]])
-        return f"Predicted Group: {prediction[0]}"
-    return '''
-        <form method="post">
-            Math Score: <input type="text" name="math_score"><br>
-            English Score: <input type="text" name="eng_score"><br>
-            <input type="submit" value="Find Group">
-        </form>
-    '''
+
+        # Predict the enrollment for the next year based on user input
+        prediction = model.predict([[prev_enrollment_year_1, prev_enrollment_year_2, prev_enrollment_year_3]])[0]
+
+    return render_template('knn.html', prediction=prediction, error_message=error_message)
 
 @app.route('/svm', methods=['GET', 'POST'])
 def svm():
