@@ -31,9 +31,9 @@ def linear_regression():
             error_message = "Invalid input. Please enter numeric values for all fields."
             return render_template('linear_regression.html', error_message=error_message)
 
-        # Sample historical enrollment data (you can replace this with actual data)
+        # Sample historical enrollment data
         data = pd.DataFrame({
-            'Department': ['Computer Science', 'Information Technology', 'Mechanical Engineering', 'Civil Engineering', 'Biology'],
+            'Department': ['Computer Science', 'Information Technology', 'Mechanical Engineering', 'Civil Engineering', 'Nursing'],
             'PrevYear1': [100, 120, 90, 110, 80],
             'PrevYear2': [105, 125, 95, 115, 85],
             'PrevYear3': [110, 130, 100, 120, 90],  
@@ -62,8 +62,8 @@ def linear_regression():
 
 
 @app.route('/naive_bayes', methods=['GET', 'POST'])
-def predict_professor():
-    prediction = None
+def naive_bayes():
+    prediction = None    # Stores the result of the model's prediction
     error_message = None
 
     if request.method == 'POST':
@@ -77,10 +77,10 @@ def predict_professor():
 
         except ValueError:
             error_message = "Invalid input. Please enter numeric values for all fields."
-            return render_template('predict_professor.html', error_message=error_message)
+            return render_template('naive_bayes.html', error_message=error_message)
 
         # Example training data: student evaluations of professors
-        data = pd.DataFrame({
+        data = pd.DataFrame({                                      #defines some historical data of student evaluations for professors.
             'Engagement': [85, 70, 95, 80, 65],
             'Clarity': [90, 75, 80, 85, 70],
             'Knowledge': [88, 80, 85, 78, 65],
@@ -133,7 +133,7 @@ def knn():
 
         # Sample historical enrollment data
         data = pd.DataFrame({
-            'Department': ['Computer Science', 'Information Technology', 'Mechanical Engineering', 'Civil Engineering', 'Biology'],
+            'Department': ['Computer Science', 'Information Technology', 'Mechanical Engineering', 'Civil Engineering', 'Nursing'],
             'PrevYear1': [100, 120, 90, 110, 80],
             'PrevYear2': [105, 125, 95, 115, 85],
             'PrevYear3': [110, 130, 100, 120, 90],
@@ -341,5 +341,7 @@ def neural_network():
             return render_template('ann.html', error_message=error_message)
 
     return render_template('ann.html', prediction=prediction, error_message=error_message)
+
+
 if __name__ == '__main__':
     app.run(debug=True)
