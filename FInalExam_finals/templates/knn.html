@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KNN - Predict Enrollment</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f4f4f9;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        form {
+            background: #fff;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        input[type="text"], select {
+            padding: 10px;
+            width: 100%;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        input[type="submit"] {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #555;
+        }
+        .error-message {
+            color: red;
+            font-size: 1.2em;
+        }
+        .result {
+            color: #2a7a2a;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <h2>K-Nearest Neighbors - Predict Enrollment</h2>
+        <form method="post">
+            <label for="department">Department:</label>
+            <select name="department" required>
+                <option value="Computer Science">Computer Science</option>
+                <option value="Information Technology">Information Technology</option>
+                <option value="Mechanical Engineering">Mechanical Engineering</option>
+                <option value="Civil Engineering">Civil Engineering</option>
+                <option value="Biology">Biology</option>
+            </select><br><br>
+
+            <label for="prev_enrollment_year_1">Previous Enrollment (Year 1):</label>
+            <input type="text" name="prev_enrollment_year_1" placeholder="e.g., 100" required><br><br>
+
+            <label for="prev_enrollment_year_2">Previous Enrollment (Year 2):</label>
+            <input type="text" name="prev_enrollment_year_2" placeholder="e.g., 105" required><br><br>
+
+            <label for="prev_enrollment_year_3">Previous Enrollment (Year 3):</label>
+            <input type="text" name="prev_enrollment_year_3" placeholder="e.g., 110" required><br><br>
+
+            <input type="submit" value="Predict">
+        </form>
+
+        {% if error_message %}
+            <p class="error-message">{{ error_message }}</p>
+        {% endif %}
+
+        {% if prediction %}
+            <p class="result">Predicted Enrollment for Next Year: {{ prediction }}</p>
+        {% endif %}
+    </main>
+</body>
+</html>
